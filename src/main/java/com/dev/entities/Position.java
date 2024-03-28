@@ -1,11 +1,14 @@
 package com.dev.entities;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,11 +21,13 @@ public class Position {
 	private String position;
 	private Double salary;
 	
+	@OneToMany(mappedBy = "position")
+	private Set<Employee> employees = new HashSet<>();
+	
 	public Position() {
 	}
 
 	public Position(Long id, String position, Double salary) {
-		super();
 		this.id = id;
 		this.position = position;
 		this.salary = salary;
