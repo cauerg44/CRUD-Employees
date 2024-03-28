@@ -26,6 +26,9 @@ public class Department {
 	@ManyToMany(mappedBy = "departments")
 	private Set<Employee> employees = new HashSet<>();
 
+	public Department() {
+	}
+	
 	public Department(Long id, String name) {
 		this.id = id;
 		this.name = name;
