@@ -23,7 +23,7 @@ public class Department {
 	@Column(unique = true)
 	private String name;
 	
-	@ManyToMany(mappedBy = "employees")
+	@ManyToMany(mappedBy = "departments")
 	private Set<Employee> employees = new HashSet<>();
 
 	public Department(Long id, String name) {

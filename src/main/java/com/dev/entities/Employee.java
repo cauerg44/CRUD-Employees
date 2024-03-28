@@ -28,8 +28,6 @@ public class Employee {
 	@Column(unique = true)
 	private String email;
 	private LocalDate birthDate;
-	
-	@Column(unique = true)
 	private String credentials;
 	
 	@ManyToOne
