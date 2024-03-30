@@ -35,6 +35,13 @@ public class EmployeeService {
 	private DepartmentRepository departmentRepository;
 
 	@Transactional(readOnly = true)
+	public EmployeeDTO findById(Long id) {
+		Employee emp = employeeRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException("Resource not found."));
+		return new EmployeeDTO(emp);
+	}
+	
+	@Transactional(readOnly = true)
 	public List<EmployeeDTO> findAll() {
 		List<Employee> list = employeeRepository.findAll();
 		return list.stream().map(x -> new EmployeeDTO(x)).toList();

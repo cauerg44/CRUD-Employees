@@ -25,6 +25,12 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<EmployeeDTO> findById(@PathVariable Long id) {
+		EmployeeDTO dto = employeeService.findById(id);
+		return ResponseEntity.ok(dto);
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<EmployeeDTO>> findAll() {
 		List<EmployeeDTO> list = employeeService.findAll();
