@@ -90,7 +90,23 @@ public class Employee {
 	public void setCredentials(String credentials) {
 		this.credentials = credentials;
 	}
+	
+	public Position getPosition() {
+		return position;
+	}
 
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+	public Set<Department> getDepartments() {
+		return departments;
+	}
+
+	public void addDepartment(Department dep) {
+		departments.add(dep);
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
