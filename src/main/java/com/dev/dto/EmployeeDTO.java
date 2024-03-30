@@ -6,15 +6,29 @@ import java.util.stream.Collectors;
 
 import com.dev.entities.Employee;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+
 public class EmployeeDTO {
 
 	private Long id;
+	
+	@Size(min = 3, max = 50, message = "Name must have 3 up to 50 characters")
+    @NotBlank(message = "Employee must have a name.")
 	private String name;
 	private String email;
-	private LocalDate birthDate;
-	private String credentials;
+	
+	@NotNull(message = "Birth date must be provided")
+    @Past(message = "Birth date must be in the past")
+    private LocalDate birthDate;
 
-	private PositionDTO position;
+    @NotBlank(message = "Credentials must not be blank")
+    private String credentials;
+
+    @NotNull(message = "Position must be provided")
+    private PositionDTO position;
 
 	private Set<DepartmentDTO> employeeDepartment;
 
