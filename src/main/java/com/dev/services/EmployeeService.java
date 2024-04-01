@@ -62,8 +62,8 @@ public class EmployeeService {
 			obj.setPosition(position);
 			
 		}
-		if (dto.getEmployeeDepartment() != null) {
-			Set<Department> departments = dto.getEmployeeDepartment().stream()
+		if (dto.getDepartment() != null) {
+			Set<Department> departments = dto.getDepartment().stream()
 					.map(departmentDto -> departmentRepository.findById(departmentDto.getId())
 							.orElseThrow(() -> new ResourceNotFoundException("Departamento não encontrado")))
 					.collect(Collectors.toSet());
@@ -90,11 +90,10 @@ public class EmployeeService {
 	            obj.setPosition(position);
 	        }
 
-	        if (dto.getEmployeeDepartment() != null) {
-	            Set<Department> departments = dto.getEmployeeDepartment().stream()
+	        if (dto.getDepartment() != null) {
+	            Set<Department> departments = dto.getDepartment().stream()
 	                    .map(departmentDto -> departmentRepository.findById(departmentDto.getId())
-	                            .orElseThrow(() -> new ResourceNotFoundException(
-	                                    "Department not found with id: " + departmentDto.getId())))
+	                            .orElseThrow(() -> new ResourceNotFoundException("Position not found.")))
 	                    .collect(Collectors.toSet());
 	            obj.getDepartments().clear();
 	            obj.getDepartments().addAll(departments);
