@@ -29,6 +29,14 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	
 	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_CEO')")
+	@GetMapping(value = "/me")
+	public ResponseEntity<EmployeeDTO> findMe() {
+		EmployeeDTO dto = employeeService.getMe();
+		return ResponseEntity.ok(dto);
+	}
+	
+	
+	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_CEO')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<EmployeeDTO> findById(@PathVariable Long id) {
 		EmployeeDTO dto = employeeService.findById(id);

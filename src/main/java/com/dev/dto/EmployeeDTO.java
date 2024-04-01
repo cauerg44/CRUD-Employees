@@ -1,8 +1,12 @@
 package com.dev.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import com.dev.entities.Employee;
 
@@ -31,6 +35,8 @@ public class EmployeeDTO {
     private PositionDTO position;
 
 	private Set<DepartmentDTO> department;
+	
+	private List<String> roles = new ArrayList<>();
 
 	public EmployeeDTO() {
 	}
@@ -58,6 +64,9 @@ public class EmployeeDTO {
 			department = obj.getDepartments()
 					.stream().map(dep -> new DepartmentDTO(dep))
 					.collect(Collectors.toSet());
+		}
+		for (GrantedAuthority role : obj.getRoles()) {
+			roles.add(role.getAuthority());
 		}
 	}
 
@@ -87,5 +96,9 @@ public class EmployeeDTO {
 
 	public Set<DepartmentDTO> getDepartment() {
 		return department;
+	}
+
+	public List<String> getRoles() {
+		return roles;
 	}
 }
