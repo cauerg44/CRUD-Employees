@@ -1,9 +1,13 @@
 package com.dev.entities;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,9 +20,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class Employee implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -141,5 +146,40 @@ public class Employee {
 			return false;
 		Employee other = (Employee) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles;
+	}
+
+	@Override
+	public String getPassword() {
+		return credentials;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 }

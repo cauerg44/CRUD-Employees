@@ -1,5 +1,6 @@
 package com.dev.services;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +19,8 @@ import com.dev.dto.EmployeeDTO;
 import com.dev.entities.Department;
 import com.dev.entities.Employee;
 import com.dev.entities.Position;
+import com.dev.entities.Role;
+import com.dev.projections.EmployeeDetailsProjection;
 import com.dev.repositories.DepartmentRepository;
 import com.dev.repositories.EmployeeRepository;
 import com.dev.repositories.PositionRepository;
@@ -24,7 +30,7 @@ import com.dev.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class EmployeeService {
+public class EmployeeService implements UserDetailsService {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
@@ -118,5 +124,21 @@ public class EmployeeService {
 			throw new DatabaseException("Fail in integrity violation;");
 		}
 	}
-	
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		List<EmployeeDetailsProjection> result = employeeRepository.searchEmployeeAndRolesByEmail(username);
+		if (result.isEmpty()) {
+			throw new UsernameNotFoundException("User not found.");
+		}
+		
+		Employee emp = new Employee();
+		emp.setEmail(username);
+		emp.setCredentials(result.get(0).getCredentials());
+		for (EmployeeDetailsProjection projection : result) {
+			emp.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
+		}
+		
+		return emp;
+	}
 }
