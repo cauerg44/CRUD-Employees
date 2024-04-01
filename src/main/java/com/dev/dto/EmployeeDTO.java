@@ -30,7 +30,7 @@ public class EmployeeDTO {
     @NotNull(message = "Position must be provided")
     private PositionDTO position;
 
-	private Set<DepartmentDTO> employeeDepartment;
+	private Set<DepartmentDTO> department;
 
 	public EmployeeDTO() {
 	}
@@ -55,7 +55,7 @@ public class EmployeeDTO {
 			position = new PositionDTO(obj.getPosition());
 		}
 		if (obj.getDepartments() != null) {
-			employeeDepartment = obj.getDepartments()
+			department = obj.getDepartments()
 					.stream().map(dep -> new DepartmentDTO(dep))
 					.collect(Collectors.toSet());
 		}
@@ -85,7 +85,7 @@ public class EmployeeDTO {
 		return position;
 	}
 
-	public Set<DepartmentDTO> getEmployeeDepartment() {
-		return employeeDepartment;
+	public Set<DepartmentDTO> getDepartment() {
+		return department;
 	}
 }

@@ -40,6 +40,12 @@ public class Employee {
 				inverseJoinColumns = @JoinColumn(name = "department_id"))
 	private Set<Department> departments = new HashSet<>();
 	
+	@ManyToMany
+	@JoinTable(name = "employee_role",
+	        joinColumns = @JoinColumn(name = "employee_id"),
+	        inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+	
 	public Employee() {
 	}
 
@@ -105,6 +111,19 @@ public class Employee {
 
 	public void addDepartment(Department dep) {
 		departments.add(dep);
+	}
+	
+	public void addRole(Role role) {
+		roles.add(role);
+	}
+	
+	public boolean hasRole(String roleName) {
+		for (Role role : roles) {
+			if (role.getAuthority().equals(roleName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override

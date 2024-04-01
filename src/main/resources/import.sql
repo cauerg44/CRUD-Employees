@@ -3,7 +3,7 @@ INSERT INTO departments (name) VALUES ('Tech');
 
 INSERT INTO positions (position, salary) VALUES ('Software developer', 5600.00);
 INSERT INTO positions (position, salary) VALUES ('Data analyst', 5600.00);
-INSERT INTO positions (position, salary) VALUES ('CEO', 7500.00);
+INSERT INTO positions (position, salary) VALUES ('Director', 7500.00);
 INSERT INTO positions (position, salary) VALUES ('Human Resources', 4500.00);
 
 INSERT INTO employees (name, email, credentials, birth_date, position_id) VALUES ('Cauê Garcia', 'caue@gmail.com', '2024-cre', '2004-11-08', 1); 
@@ -32,6 +32,35 @@ INSERT INTO employees (name, email, credentials, birth_date, position_id) VALUES
 INSERT INTO employees (name, email, credentials, birth_date, position_id) VALUES ('Isabela Lima', 'isabela@gmail.com', '2024-cre', '1993-03-18', 3);
 INSERT INTO employees (name, email, credentials, birth_date, position_id) VALUES ('Vinícius Almeida', 'vinicius@gmail.com', '2024-cre', '2001-09-09', 1);
 
+INSERT INTO roles (authority) VALUES ('ROLE_CEO');
+INSERT INTO roles (authority) VALUES ('ROLE_EMPLOYEE');
+
+INSERT INTO employee_role (employee_id, role_id) VALUES (1, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (2, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (3, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (4, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (5, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (6, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (7, 1);
+INSERT INTO employee_role (employee_id, role_id) VALUES (7, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (8, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (9, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (10, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (11, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (12, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (13, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (14, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (15, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (16, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (17, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (18, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (19, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (20, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (21, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (22, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (23, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (24, 2);
+INSERT INTO employee_role (employee_id, role_id) VALUES (25, 2);
 
 INSERT INTO employee_department (department_id, employee_id) VALUES (2, 1);
 INSERT INTO employee_department (department_id, employee_id) VALUES (2, 2);
