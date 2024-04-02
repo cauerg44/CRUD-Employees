@@ -29,6 +29,7 @@ import com.dev.repositories.EmployeeRepository;
 import com.dev.repositories.PositionRepository;
 import com.dev.services.exceptions.DatabaseException;
 import com.dev.services.exceptions.ResourceNotFoundException;
+import com.dev.util.CustomUserUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -43,6 +44,9 @@ public class EmployeeService implements UserDetailsService {
 
 	@Autowired
 	private DepartmentRepository departmentRepository;
+	
+	@Autowired
+	private CustomUserUtil customUserUtil;
 
 	@Transactional(readOnly = true)
 	public EmployeeDTO findById(Long id) {
@@ -111,7 +115,7 @@ public class EmployeeService implements UserDetailsService {
 	        obj = employeeRepository.save(obj);
 	        return new EmployeeDTO(obj);
 	    } catch (EntityNotFoundException e) {
-	        throw new ResourceNotFoundException("Employee not found with id: " + id);
+	        throw new ResourceNotFoundException("Employee not found.");
 	    }
 	}
 
@@ -147,14 +151,11 @@ public class EmployeeService implements UserDetailsService {
 	
 	protected Employee authenticated() {
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-			String username = jwtPrincipal.getClaim("username");
-	
+			String username = customUserUtil.getLoggedUsername();
 			return employeeRepository.findByEmail(username);
 		}
 		catch(Exception e) {
-			throw new UsernameNotFoundException("Email not found.");		}
+			throw new UsernameNotFoundException("Invalid employee.");		}
 	}
 	
 	@Transactional(readOnly = true)
