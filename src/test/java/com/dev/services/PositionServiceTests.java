@@ -18,6 +18,9 @@ import com.dev.dto.PositionDTO;
 import com.dev.entities.Position;
 import com.dev.factories.PositionFactory;
 import com.dev.repositories.PositionRepository;
+import com.dev.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 public class PositionServiceTests {
@@ -28,14 +31,20 @@ public class PositionServiceTests {
 	@Mock
 	private PositionRepository repository;
 	
+	private Long existingPositionId, nonExistingPositionId;
+	private String positionName;
 	private PositionDTO positionDTO;
-	
 	private Position position;
 	private List<Position> list;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		position = PositionFactory.createPosition();
+		existingPositionId = 1L;
+		nonExistingPositionId = 2L;
+		
+		positionName = "UX Designer";
+		
+		position = PositionFactory.createPosition(positionName);
 		positionDTO = new PositionDTO(position);
 		
 		list = new ArrayList<>();
@@ -44,6 +53,9 @@ public class PositionServiceTests {
 		Mockito.when(repository.findAll()).thenReturn(list);
 		
 		Mockito.when(repository.save(any())).thenReturn(position);
+		
+		Mockito.when(repository.getReferenceById(existingPositionId)).thenReturn(position);
+		Mockito.when(repository.getReferenceById(nonExistingPositionId)).thenThrow(EntityNotFoundException.class);
 	}
 	
 	@Test
@@ -60,10 +72,30 @@ public class PositionServiceTests {
 	@Test
 	public void insertShouldReturnNewPositionDTO() {
 		
-		PositionDTO newPosition = service.insert(positionDTO);
+		PositionDTO result = service.insert(positionDTO);
 	
-		Assertions.assertNotNull(newPosition);
-		Assertions.assertEquals(newPosition.getId(), position.getId());
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.getId(), position.getId());
+		Assertions.assertEquals(result.getPosition(), position.getPosition());
+		Assertions.assertEquals(result.getSalary(), position.getSalary());
 	}
 	
+	@Test
+	public void updateShouldReturnNewPositionDTOWhenIdExists() {
+		
+		PositionDTO result = service.update(existingPositionId, positionDTO);
+		
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.getId(), existingPositionId);
+		Assertions.assertEquals(result.getPosition(), positionDTO.getPosition());
+		Assertions.assertEquals(result.getSalary(), positionDTO.getSalary());
+	}
+	
+	@Test
+	public void updateShouldThrowsResourceNotFoundExceptionWhenIdDoesNotExists() {
+		
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.update(nonExistingPositionId, positionDTO);
+		});
+	}
 }
