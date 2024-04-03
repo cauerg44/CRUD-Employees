@@ -25,7 +25,6 @@ public class PositionController {
 	@Autowired
 	private PositionService positionService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_CEO')")
 	@GetMapping
 	public ResponseEntity<List<PositionDTO>> findAll() {
 		List<PositionDTO> list = positionService.findAll();

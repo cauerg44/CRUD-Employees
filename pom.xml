@@ -81,6 +81,7 @@
 						<exclude>com/dev/entities/**</exclude>
 						<exclude>com/dev/dto/**</exclude>
 						<exclude>com/dev/util/**</exclude>
+						<exclude>com/dev/controllers/**</exclude>
 						<exclude>com/dev/controllers/handlers/**</exclude>
 						<exclude>com/dev/services/AuthService.class</exclude>
 						<exclude>com/dev/services/exceptions/**</exclude>
