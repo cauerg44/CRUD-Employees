@@ -63,6 +63,7 @@ public class PositionControllerIT {
 				mockMvc.perform(get("/positions")
 					.accept(MediaType.APPLICATION_JSON));
 		
+		result.andExpect(status().isOk());
 		result.andExpect(jsonPath("$[0].id").value(1));
 		result.andExpect(jsonPath("$[0].position").value("Software developer"));
 		result.andExpect(jsonPath("$[0].salary").value(5600.0));
@@ -74,7 +75,7 @@ public class PositionControllerIT {
 	@Test // TEST FAILING - EXPECTED 200 BUT WAS 400
 	public void insertShouldReturnPositionDTOCreatedWhenLoggedAsCEO() throws Exception {
 		
-		String jsonBody = objectMapper.writeValueAsString(invalidToken);
+		String jsonBody = objectMapper.writeValueAsString(positionDTO);
 		
 		ResultActions result = 
 						mockMvc.perform(post("/positions")
