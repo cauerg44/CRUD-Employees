@@ -85,7 +85,7 @@ public class PositionControllerIT {
 								.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isCreated());
-		result.andExpect(jsonPath("$.id").value(26L));
+		result.andExpect(jsonPath("$.id").value(5L));
 		result.andExpect(jsonPath("$.position").value("Tech Leader"));
 		result.andExpect(jsonPath("$.salary").value(8600.00));
 	}
