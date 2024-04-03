@@ -44,7 +44,7 @@ public class PositionControllerIT {
 		
 	}
 	
-	@Test
+	@Test // TEST FAILING
 	public void findAllShouldReturnListOfPositionDTO() throws Exception {
 		
 		ResultActions result = 
