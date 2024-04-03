@@ -7,4 +7,4 @@ Application of CRUD Employees with security.
 
 ## Reports with JaCoCo
 ![Reports with JaCoCo](https://github.com/cauerg44/pictures/blob/main/images/Captura%20de%20tela%202024-04-02%20145345.png)
-
+![Reports with JaCoCo](https://github.com/cauerg44/pictures/blob/main/images/Captura%20de%20tela%202024-04-03%20152844.png)
