@@ -1,8 +1,6 @@
 package com.dev.services;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dev.dto.DepartmentDTO;
 import com.dev.dto.EmployeeDTO;
 import com.dev.entities.Department;
 import com.dev.entities.Employee;
@@ -61,25 +60,7 @@ public class EmployeeService implements UserDetailsService {
 	@Transactional
 	public EmployeeDTO insert(EmployeeDTO dto) {
 		Employee obj = new Employee();
-		obj.setName(dto.getName());
-		obj.setEmail(dto.getEmail());
-		obj.setBirthDate(dto.getBirthDate());
-		obj.setCredentials(dto.getCredentials());
-		
-		if (dto.getPosition() != null) {
-			Position position = positionRepository.findById(dto.getPosition().getId())
-					.orElseThrow(() -> new ResourceNotFoundException("Resource not found."));
-			obj.setPosition(position);
-			
-		}
-		if (dto.getDepartment() != null) {
-			Set<Department> departments = dto.getDepartment().stream()
-					.map(departmentDto -> departmentRepository.findById(departmentDto.getId())
-							.orElseThrow(() -> new ResourceNotFoundException("Departamento não encontrado")))
-					.collect(Collectors.toSet());
-			obj.getDepartments().addAll(departments);
-		}
-		
+		copyDtoToEntity(dto, obj);	
 		obj = employeeRepository.save(obj);
 		return new EmployeeDTO(obj);
 	}
@@ -87,31 +68,12 @@ public class EmployeeService implements UserDetailsService {
 	@Transactional
 	public EmployeeDTO update(Long id, EmployeeDTO dto) {
 	    try {
-	        Employee obj = employeeRepository.findById(id)
-	                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
-	        obj.setName(dto.getName());
-	        obj.setEmail(dto.getEmail());
-	        obj.setBirthDate(dto.getBirthDate());
-	        obj.setCredentials(dto.getCredentials());
-
-	        if (dto.getPosition() != null) {
-	            Position position = positionRepository.findById(dto.getPosition().getId())
-	                    .orElseThrow(() -> new ResourceNotFoundException("Position not found."));
-	            obj.setPosition(position);
-	        }
-
-	        if (dto.getDepartment() != null) {
-	            Set<Department> departments = dto.getDepartment().stream()
-	                    .map(departmentDto -> departmentRepository.findById(departmentDto.getId())
-	                            .orElseThrow(() -> new ResourceNotFoundException("Position not found.")))
-	                    .collect(Collectors.toSet());
-	            obj.getDepartments().clear();
-	            obj.getDepartments().addAll(departments);
-	        }
-
+	        Employee obj = employeeRepository.getReferenceById(id);
+	        copyDtoToEntity(dto, obj);	
 	        obj = employeeRepository.save(obj);
 	        return new EmployeeDTO(obj);
-	    } catch (EntityNotFoundException e) {
+	    } 
+	    catch (EntityNotFoundException e) {
 	        throw new ResourceNotFoundException("Employee not found.");
 	    }
 	}
@@ -129,6 +91,26 @@ public class EmployeeService implements UserDetailsService {
 		}
 	}
 
+	private void copyDtoToEntity(EmployeeDTO dto, Employee entity) {
+		entity.setName(dto.getName());
+		entity.setEmail(dto.getEmail());
+		entity.setBirthDate(dto.getBirthDate());
+		entity.setCredentials(dto.getCredentials());
+		
+		if (dto.getPosition() != null) {
+	        Position position = new Position();
+	        position.setId(dto.getPosition().getId());
+	        entity.setPosition(position);
+	    }
+		
+		entity.getDepartments().clear();
+		for (DepartmentDTO depDTO : dto.getDepartment()) {
+			Department department = new Department();
+			department.setId(depDTO.getId());
+			entity.getDepartments().add(department);
+		}
+    }
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		List<EmployeeDetailsProjection> result = employeeRepository.searchEmployeeAndRolesByEmail(username);
@@ -149,7 +131,7 @@ public class EmployeeService implements UserDetailsService {
 	protected Employee authenticated() {
 		try {
 			String username = customUserUtil.getLoggedUsername();
-			return employeeRepository.findByEmail(username);
+			return employeeRepository.findByEmail(username).get();
 		}
 		catch(Exception e) {
 			throw new UsernameNotFoundException("Invalid employee.");		}
