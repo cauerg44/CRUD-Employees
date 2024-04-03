@@ -76,16 +76,14 @@
 				<version>0.8.7</version>
 				<configuration>
 					<excludes>
-						<exclude>
-							com/dev/ProjectApplication.class</exclude>
+						<exclude>com/dev/ProjectApplication.class</exclude>
 						<exclude>com/dev/config/**</exclude>
 						<exclude>com/dev/entities/**</exclude>
 						<exclude>com/dev/dto/**</exclude>
 						<exclude>com/dev/util/**</exclude>
-						<exclude>
-							com/dev/controllers/handlers/**</exclude>
-						<exclude>
-							com/dev/services/exceptions/**</exclude>
+						<exclude>com/dev/controllers/handlers/**</exclude>
+						<exclude>com/dev/services/AuthService.class</exclude>
+						<exclude>com/dev/services/exceptions/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
