@@ -1,7 +1,7 @@
 # About project.
 
-Application of CRUD Employees with security.
-Test coverage with JaCoCo in services
+- CRUD application for managing employee data with enhanced security measures.
+- Comprehensive test coverage using JaCoCo for service layer.
 
 ## Domain model
 ![Modelo Conceitual](https://github.com/cauerg44/pictures/blob/main/images/crud-employees-spring.png)
