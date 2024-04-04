@@ -28,22 +28,18 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_CEO')")
 	@GetMapping(value = "/me")
 	public ResponseEntity<EmployeeDTO> findMe() {
 		EmployeeDTO dto = employeeService.getMe();
 		return ResponseEntity.ok(dto);
 	}
 	
-	
-	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_CEO')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<EmployeeDTO> findById(@PathVariable Long id) {
 		EmployeeDTO dto = employeeService.findById(id);
 		return ResponseEntity.ok(dto);
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_CEO')")
 	@GetMapping
 	public ResponseEntity<Page<EmployeeDTO>> findAll(
 		@RequestParam(name = "name", defaultValue = "") String name,
