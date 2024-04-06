@@ -98,8 +98,12 @@ public class EmployeeService implements UserDetailsService {
 		entity.setCredentials(dto.getCredentials());
 		
 		if (dto.getPosition() != null) {
+			Position pos = positionRepository.findById(dto.getPosition().getId()).orElseThrow(
+					() -> new ResourceNotFoundException("Resource not found."));
 	        Position position = new Position();
-	        position.setId(dto.getPosition().getId());
+	        position.setId(pos.getId());
+			position.setPosition(pos.getPosition());
+			position.setSalary(pos.getSalary());
 	        entity.setPosition(position);
 	    }
 		
@@ -107,6 +111,7 @@ public class EmployeeService implements UserDetailsService {
 		for (DepartmentDTO depDTO : dto.getDepartment()) {
 			Department department = new Department();
 			department.setId(depDTO.getId());
+			department.setName(depDTO.getName());
 			entity.getDepartments().add(department);
 		}
     }

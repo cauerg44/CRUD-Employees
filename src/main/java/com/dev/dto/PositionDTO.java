@@ -8,8 +8,6 @@ public class PositionDTO {
 
 	private Long id;
 	private String position;
-	
-	@DecimalMin(value = "1412.00", message = "Salary must be greater than 1412.00")
 	private Double salary;
 	
 	public PositionDTO() {
